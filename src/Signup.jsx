@@ -7,6 +7,7 @@ function Signup({ onSignupSuccess, onSwitchToLogin }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -41,12 +42,33 @@ function Signup({ onSignupSuccess, onSwitchToLogin }) {
           onChange={(e) => setEmail(e.target.value)}
         />
         <br />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+       <div style={{ position: "relative" }}>
+  <input
+    type={showPassword ? "text" : "password"}
+    placeholder="Password"
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+    style={{ paddingRight: "70px" }}
+  />
+  <button
+    type="button"
+    onClick={() => setShowPassword(!showPassword)}
+    style={{
+      position: "absolute",
+      right: "8px",
+      top: "50%",
+      transform: "translateY(-50%)",
+      background: "none",
+      color: "#6b7780",
+      padding: "4px 8px",
+      margin: 0,
+      fontSize: "12px",
+      fontWeight: "600",
+    }}
+  >
+    {showPassword ? "Hide" : "Show"}
+  </button>
+</div>
         <br />
         <button type="submit">Sign Up</button>
       </form>
