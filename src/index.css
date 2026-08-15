@@ -1,0 +1,217 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  background-color: #f7f9fa;
+  color: #1a1a1a;
+}
+
+#root {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px 20px 60px;
+}
+
+/* ---------- Logo / Header ---------- */
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.app-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #1cc29f;
+}
+
+.app-logo-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #1cc29f, #17a589);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 800;
+  font-size: 18px;
+}
+
+/* ---------- Typography ---------- */
+h1 {
+  color: #1a2e35;
+  font-size: 26px;
+  margin-bottom: 4px;
+}
+
+h2 {
+  color: #1a2e35;
+}
+
+h3 {
+  color: #4a5a60;
+  margin-top: 32px;
+  margin-bottom: 14px;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #e3e8ea;
+  padding-bottom: 8px;
+}
+
+/* ---------- Cards / Forms ---------- */
+form {
+  background: white;
+  padding: 22px;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  margin-bottom: 20px;
+  border: 1px solid #edf1f2;
+}
+
+input, select {
+  display: block;
+  width: 100%;
+  padding: 11px 14px;
+  margin: 8px 0;
+  border: 1px solid #dde3e5;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #fafcfc;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #1cc29f;
+  background: white;
+}
+
+button {
+  background-color: #1cc29f;
+  color: white;
+  border: none;
+  padding: 11px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background-color 0.15s ease;
+}
+
+button:hover {
+  background-color: #17a589;
+}
+
+/* ---------- Lists / Cards ---------- */
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  background: white;
+  padding: 14px 18px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  border: 1px solid #edf1f2;
+}
+
+li button {
+  background: none;
+  color: #1a2e35;
+  padding: 0;
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+li button:hover {
+  color: #1cc29f;
+  background: none;
+}
+
+/* ---------- Balance indicators ---------- */
+.balance-owed {
+  color: #1cc29f;
+  font-weight: 700;
+}
+
+.balance-owes {
+  color: #e0563f;
+  font-weight: 700;
+}
+
+.balance-settled {
+  color: #8a97a0;
+  font-weight: 500;
+}
+
+p {
+  line-height: 1.5;
+}
+
+label {
+  font-size: 13px;
+  color: #6b7780;
+  font-weight: 600;
+}
+
+.error-text {
+  color: #e0563f;
+  background: #fdeeeb;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.back-link {
+  background: none;
+  color: #6b7780;
+  padding: 0;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.back-link:hover {
+  color: #1cc29f;
+  background: none;
+}
+/* ---------- Dashboard group cards ---------- */
+li button {
+  width: 100%;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+li button::after {
+  content: "→";
+  color: #c3cdd1;
+  font-weight: 400;
+  transition: transform 0.15s ease, color 0.15s ease;
+}
+
+li:hover button::after {
+  color: #1cc29f;
+  transform: translateX(3px);
+}
+
+li:hover {
+  border-color: #1cc29f;
+}
+
+/* ---------- Section spacing tweak ---------- */
+h3:first-of-type {
+  margin-top: 24px;
+}
