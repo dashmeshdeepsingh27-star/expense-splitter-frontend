@@ -1,4 +1,4 @@
-import { login } from "./api";
+import { login, BASE_URL } from "./api";
 import { useState, useEffect, useRef } from "react";
 
 function Login({ onLoginSuccess, onSwitchToSignup }) {
@@ -34,7 +34,7 @@ useEffect(() => {
 async function handleGoogleResponse(response) {
   const idToken = response.credential;
 
-  const res = await fetch("http://localhost:8080/api/auth/google", {
+   const res = await fetch(`${BASE_URL}/auth/google`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ idToken }),

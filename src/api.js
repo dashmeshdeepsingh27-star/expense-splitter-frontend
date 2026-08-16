@@ -1,4 +1,5 @@
-const BASE_URL = "https://expense-splitter-backend-q8p0.onrender.com/api";
+export const BASE_URL = "https://expense-splitter-backend-q8p0.onrender.com/api";\
+
 
 function authHeaders() {
   const token = localStorage.getItem("token");
