@@ -66,11 +66,10 @@ export async function getExpenses(groupId) {
   return response;
 }
 
-export async function addExpense(groupId, amount, description, shares) {
+export async function addExpense(groupId, amount, description, shares, paidByEmail) {
   const body = { amount, description };
-  if (shares) {
-    body.shares = shares;
-  }
+  if (shares) body.shares = shares;
+  if (paidByEmail) body.paidByEmail = paidByEmail;
   const response = await fetch(`${BASE_URL}/groups/${groupId}/expenses`, {
     method: "POST",
     headers: authHeaders(),

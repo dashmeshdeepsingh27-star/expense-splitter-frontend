@@ -16,6 +16,7 @@ function GroupDetail({ groupId, onBack }) {
   const [customShares, setCustomShares] = useState({});
   const [paymentTo, setPaymentTo] = useState("");
   const [paymentAmount, setPaymentAmount] = useState("");
+  const [paidByEmail, setPaidByEmail] = useState("");
 
   const [newMemberEmail, setNewMemberEmail] = useState("");
   const [expenseAmount, setExpenseAmount] = useState("");
@@ -26,27 +27,6 @@ function GroupDetail({ groupId, onBack }) {
   useEffect(() => {
     loadAll();
   }, [groupId]);
-
-  async function handleAddPayment(e) {
-  e.preventDefault();
-  setError("");
-
-  if (!paymentTo || !paymentAmount) {
-    setError("Select a recipient and enter an amount");
-    return;
-  }
-
-  const response = await addPayment(groupId, paymentTo, parseFloat(paymentAmount));
-
-  if (response.ok) {
-    setPaymentTo("");
-    setPaymentAmount("");
-    loadAll();
-  } else {
-    const message = await response.text();
-    setError(message);
-  }
-}
 
   async function loadAll() {
     const groupRes = await getGroup(groupId);
@@ -86,6 +66,11 @@ function GroupDetail({ groupId, onBack }) {
       return;
     }
 
+    if (parseFloat(expenseAmount) <= 0) {
+      setError("Amount must be greater than zero");
+      return;
+    }
+
     let shares = null;
 
     if (!splitEqually) {
@@ -104,12 +89,45 @@ function GroupDetail({ groupId, onBack }) {
       }
     }
 
-    const response = await addExpense(groupId, parseFloat(expenseAmount), expenseDescription, shares);
+    const response = await addExpense(
+      groupId,
+      parseFloat(expenseAmount),
+      expenseDescription,
+      shares,
+      paidByEmail || null
+    );
 
     if (response.ok) {
       setExpenseAmount("");
       setExpenseDescription("");
       setCustomShares({});
+      setPaidByEmail("");
+      loadAll();
+    } else {
+      const message = await response.text();
+      setError(message);
+    }
+  }
+
+  async function handleAddPayment(e) {
+    e.preventDefault();
+    setError("");
+
+    if (!paymentTo || !paymentAmount) {
+      setError("Select a recipient and enter an amount");
+      return;
+    }
+
+    if (parseFloat(paymentAmount) <= 0) {
+      setError("Amount must be greater than zero");
+      return;
+    }
+
+    const response = await addPayment(groupId, paymentTo, parseFloat(paymentAmount));
+
+    if (response.ok) {
+      setPaymentTo("");
+      setPaymentAmount("");
       loadAll();
     } else {
       const message = await response.text();
@@ -156,6 +174,12 @@ function GroupDetail({ groupId, onBack }) {
           value={expenseDescription}
           onChange={(e) => setExpenseDescription(e.target.value)}
         />
+        <select value={paidByEmail} onChange={(e) => setPaidByEmail(e.target.value)}>
+          <option value="">-- Paid by me --</option>
+          {group.members.map((m) => (
+            <option key={m.id} value={m.email}>{m.name}</option>
+          ))}
+        </select>
         <br />
         <label>
           <input
@@ -197,40 +221,39 @@ function GroupDetail({ groupId, onBack }) {
       </ul>
 
       <h3>Balances</h3>
-<ul>
-  {balances.map((b) => (
-    <li key={b.email}>
-      {b.name}:{" "}
-      {b.balance > 0 ? (
-        <span className="balance-owed">is owed ₹{b.balance}</span>
-      ) : b.balance < 0 ? (
-        <span className="balance-owes">owes ₹{Math.abs(b.balance)}</span>
-      ) : (
-        <span className="balance-settled">settled up</span>
-      )}
-    </li>
-  ))}
-</ul>
+      <ul>
+        {balances.map((b) => (
+          <li key={b.email}>
+            {b.name}:{" "}
+            {b.balance > 0 ? (
+              <span className="balance-owed">is owed ₹{b.balance}</span>
+            ) : b.balance < 0 ? (
+              <span className="balance-owes">owes ₹{Math.abs(b.balance)}</span>
+            ) : (
+              <span className="balance-settled">settled up</span>
+            )}
+          </li>
+        ))}
+      </ul>
 
       <h3>Settle Up</h3>
-<form onSubmit={handleAddPayment}>
-  <select value={paymentTo} onChange={(e) => setPaymentTo(e.target.value)}>
-    <option value="">-- Select who you're paying --</option>
-    {group.members
-  .filter((m) => m.email !== getEmailFromToken())
-  .map((m) => (
-    <option key={m.id} value={m.email}>{m.name}</option>
-  ))}
-  </select>
-  <input
-    type="number"
-    placeholder="Amount"
-    value={paymentAmount}
-    onChange={(e) => setPaymentAmount(e.target.value)}
-  />
-  <button type="submit">Record Payment</button>
-</form>
-
+      <form onSubmit={handleAddPayment}>
+        <select value={paymentTo} onChange={(e) => setPaymentTo(e.target.value)}>
+          <option value="">-- Select who you're paying --</option>
+          {group.members
+            .filter((m) => m.email !== getEmailFromToken())
+            .map((m) => (
+              <option key={m.id} value={m.email}>{m.name}</option>
+            ))}
+        </select>
+        <input
+          type="number"
+          placeholder="Amount"
+          value={paymentAmount}
+          onChange={(e) => setPaymentAmount(e.target.value)}
+        />
+        <button type="submit">Record Payment</button>
+      </form>
     </div>
   );
 }
