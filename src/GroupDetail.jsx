@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getGroup, addMember, getExpenses, addExpense, getSettlement, addPayment } from "./api";
+import { getGroup, addMember, getExpenses, addExpense, getSettlement, addPayment, deleteGroup } from "./api";
 
 function getEmailFromToken() {
   const token = localStorage.getItem("token");
@@ -38,6 +38,17 @@ function GroupDetail({ groupId, onBack }) {
     const balancesRes = await getSettlement(groupId);
     if (balancesRes.ok) setBalances(await balancesRes.json());
   }
+
+  async function handleDeleteGroup() {
+  if (!window.confirm("Are you sure you want to delete this group? This cannot be undone.")) return;
+
+  const response = await deleteGroup(groupId);
+  if (response.ok) {
+    onBack();
+  } else {
+    setError("Failed to delete group");
+  }
+}
 
   async function handleAddMember(e) {
     e.preventDefault();
@@ -139,6 +150,9 @@ function GroupDetail({ groupId, onBack }) {
 
   return (
     <div>
+      <button className="back-link" onClick={handleDeleteGroup} style={{ float: "right", color: "#e0563f" }}>
+  Delete Group
+</button>
       <button className="back-link" onClick={onBack}>← Back to Dashboard</button>
       <h1>{group.name}</h1>
 

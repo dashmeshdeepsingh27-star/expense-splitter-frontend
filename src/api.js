@@ -93,3 +93,11 @@ export async function addPayment(groupId, paidToEmail, amount) {
   });
   return response;
 }
+
+export async function deleteGroup(groupId) {
+  const response = await fetch(`${BASE_URL}/groups/${groupId}`, {
+    method: "DELETE",
+    headers: authHeaders(),
+  });
+  return response;
+}

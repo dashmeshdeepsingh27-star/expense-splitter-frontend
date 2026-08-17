@@ -35,7 +35,8 @@ function Dashboard({ onSelectGroup, onLogout }) {
       setNewGroupName("");
       loadGroups();
     } else {
-      setError("Failed to create group");
+      const message = await response.text();
+  setError(message);
     }
   }
 
